@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="userdetails_screen_title">Detail</string>
+    <string name="userdetails_action_reload">Reload</string>
+    <string name="userdetails_text_generic_error">An error occurred on loading the users</string>
+    <string name="userdetails_text_no_user_error">No user found for given id %s</string>
+    <string name="userdetails_label_gender">Gender:</string>
+    <string name="userdetails_label_username">Username:</string>
+    <string name="userdetails_label_fullname">Name:</string>
+    <string name="userdetails_text_fullname_format">%1$s %2$s %3$s</string>
+    <string name="userdetails_label_date">Date of birth:</string>
+    <string name="userdetails_text_date_format">yyyy/MM/dd</string>
+    <string name="userdetails_label_age">Age:</string>
+    <string name="userdetails_text_age_format">%d y/o</string>
+    <string name="userdetails_label_address">Address:</string>
+    <string name="userdetails_text_address_format">%1$d %2$s</string>
+    <string name="userdetails_label_postcode">Post code:</string>
+    <string name="userdetails_label_city">City:</string>
+    <string name="userdetails_label_state">State:</string>
+    <string name="userdetails_label_country">Country:</string>
+    <string name="userdetails_label_nationality">Nationality:</string>
+</resources>

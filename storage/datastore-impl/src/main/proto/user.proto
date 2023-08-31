@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_package = "com.uteke.contactbook.storage.datastore.user";
+option java_multiple_files = true;
+
+import "google/protobuf/wrappers.proto";
+
+message UsersProto {
+  repeated UserProto users = 1;
+}
+
+message UserProto {
+  int32 index = 1;
+  string uuid = 2;
+  string username = 3;
+  string gender = 4;
+  string title = 5;
+  string firstname = 6;
+  string lastname = 7;
+  int32 age = 8;
+  string dateOfBirth = 9;
+  string thumbnailPictureUrl = 10;
+  string largePictureUrl = 11;
+  string nationality = 12;
+  int32 streetNumber = 13;
+  string streetName = 14;
+  string city = 15;
+  string state = 16;
+  string country = 17;
+  string postcode = 18;
+}
