@@ -2,68 +2,44 @@ package com.uteke.contactbook.features.userlist.presentation
 
 import app.cash.turbine.test
 import com.uteke.contactbook.features.common.dispatcher.TestDispatcherProvider
-import com.uteke.contactbook.features.userlist.data.GetUserListRepository
-import com.uteke.contactbook.features.userlist.presentation.UserListAction
-import com.uteke.contactbook.features.userlist.presentation.UserListViewModel
-import com.uteke.contactbook.features.userlist.presentation.UserListViewState
-import com.uteke.contactbook.features.userlist.presentation.UserState
+import com.uteke.contactbook.features.userlist.data.model.UserDataModel
+import com.uteke.contactbook.features.userlist.presentation.model.Action
+import com.uteke.contactbook.features.userlist.presentation.model.Event
+import com.uteke.contactbook.features.userlist.presentation.view.ViewState
+import com.uteke.contactbook.features.userlist.presentation.view.UserState
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 class UserListViewModelTest {
-
     @Test
-    fun `process Load GIVEN repository returns list user THEN emit state Loading and Content with list`() =
+    fun `process CheckConnectivity GIVEN processor process action and mutate THEN emit state`() =
         runTest {
-            with(viewModel(getUserListRepository = fakeGetUserListRepositoryReturnsUserList)) {
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Load)
+            with(viewModel(isConnectionLost = true)) {
+                process(Action.CheckConnectivity)
 
                 viewStateFlow.test {
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true,
-                    )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = false,
-                        userStates = listOf(
-                            UserState(
-                                uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
-                                gender = "male",
-                                fullname = "Mr John Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
-                                flag = "US",
-                                age = "27 ans",
-                            ),
-                            UserState(
-                                uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
-                                gender = "female",
-                                fullname = "Mrs Jane Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
-                                flag = "FR",
-                                age = "35 ans",
-                            ),
-                        ),
-                    )
+                    awaitItem() shouldBe ViewState(isConnectivityVisible = false)
+                    awaitItem() shouldBe ViewState(isConnectivityVisible = true)
                 }
+
+                eventFlow.test { expectNoEvents() }
             }
         }
 
     @Test
-    fun `process Load twice GIVEN repository returns list user THEN emit state Loading, Content, Content with loader`() =
+    fun `process Load GIVEN processor process action and mutate THEN emit state with list`() =
         runTest {
-            with(viewModel(getUserListRepository = fakeGetUserListRepositoryReturnsUserList)) {
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Load)
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Load)
+            with(viewModel()) {
+                process(Action.Load)
 
                 viewStateFlow.test {
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true,
-                    )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = false,
+                    awaitItem() shouldBe ViewState()
+                    awaitItem() shouldBe ViewState(isLoaderVisible = true)
+                    awaitItem() shouldBe ViewState(
+                        isLoaderVisible = false,
+                        isUserListVisible = true,
                         userStates = listOf(
                             UserState(
                                 uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
@@ -71,7 +47,7 @@ class UserListViewModelTest {
                                 fullname = "Mr John Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
                                 flag = "US",
-                                age = "27 ans",
+                                age = "27 y/o",
                             ),
                             UserState(
                                 uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
@@ -79,88 +55,29 @@ class UserListViewModelTest {
                                 fullname = "Mrs Jane Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
                                 flag = "FR",
-                                age = "35 ans",
-                            ),
-                        ),
-                    )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true,
-                        userStates = listOf(
-                            UserState(
-                                uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
-                                gender = "male",
-                                fullname = "Mr John Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
-                                flag = "US",
-                                age = "27 ans",
-                            ),
-                            UserState(
-                                uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
-                                gender = "female",
-                                fullname = "Mrs Jane Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
-                                flag = "FR",
-                                age = "35 ans",
-                            ),
-                        ),
-                    )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = false,
-                        userStates = listOf(
-                            UserState(
-                                uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
-                                gender = "male",
-                                fullname = "Mr John Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
-                                flag = "US",
-                                age = "27 ans",
-                            ),
-                            UserState(
-                                uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
-                                gender = "female",
-                                fullname = "Mrs Jane Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
-                                flag = "FR",
-                                age = "35 ans",
-                            ),
-                            UserState(
-                                uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
-                                gender = "male",
-                                fullname = "Mr John Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
-                                flag = "US",
-                                age = "27 ans",
-                            ),
-                            UserState(
-                                uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
-                                gender = "female",
-                                fullname = "Mrs Jane Doe",
-                                pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
-                                flag = "FR",
-                                age = "35 ans",
+                                age = "35 y/o",
                             ),
                         ),
                     )
                 }
+
+                eventFlow.test { expectNoEvents() }
             }
         }
 
     @Test
-    fun `process Load and Reload GIVEN repository returns list user THEN emit state Loading, Content, Content with loader`() =
+    fun `process Load twice GIVEN processor process action and mutate THEN emit state with list`() =
         runTest {
-            with(viewModel(getUserListRepository = fakeGetUserListRepositoryReturnsUserList)) {
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Load)
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Reload)
+            with(viewModel()) {
+                process(Action.Load)
+                process(Action.Load)
 
                 viewStateFlow.test {
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true
-                    )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = false,
+                    awaitItem() shouldBe ViewState()
+                    awaitItem() shouldBe ViewState(isLoaderVisible = true)
+                    awaitItem() shouldBe ViewState(
+                        isLoaderVisible = false,
+                        isUserListVisible = true,
                         userStates = listOf(
                             UserState(
                                 uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
@@ -168,7 +85,7 @@ class UserListViewModelTest {
                                 fullname = "Mr John Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
                                 flag = "US",
-                                age = "27 ans",
+                                age = "27 y/o",
                             ),
                             UserState(
                                 uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
@@ -176,13 +93,13 @@ class UserListViewModelTest {
                                 fullname = "Mrs Jane Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
                                 flag = "FR",
-                                age = "35 ans",
+                                age = "35 y/o",
                             ),
                         ),
                     )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true,
+                    awaitItem() shouldBe ViewState(
+                        isLoaderVisible = true,
+                        isUserListVisible = true,
                         userStates = listOf(
                             UserState(
                                 uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
@@ -190,7 +107,7 @@ class UserListViewModelTest {
                                 fullname = "Mr John Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
                                 flag = "US",
-                                age = "27 ans",
+                                age = "27 y/o",
                             ),
                             UserState(
                                 uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
@@ -198,13 +115,13 @@ class UserListViewModelTest {
                                 fullname = "Mrs Jane Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
                                 flag = "FR",
-                                age = "35 ans",
+                                age = "35 y/o",
                             ),
                         ),
                     )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = false,
+                    awaitItem() shouldBe ViewState(
+                        isLoaderVisible = false,
+                        isUserListVisible = true,
                         userStates = listOf(
                             UserState(
                                 uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
@@ -212,7 +129,7 @@ class UserListViewModelTest {
                                 fullname = "Mr John Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
                                 flag = "US",
-                                age = "27 ans",
+                                age = "27 y/o",
                             ),
                             UserState(
                                 uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
@@ -220,7 +137,7 @@ class UserListViewModelTest {
                                 fullname = "Mrs Jane Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
                                 flag = "FR",
-                                age = "35 ans",
+                                age = "35 y/o",
                             ),
                             UserState(
                                 uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437",
@@ -228,7 +145,7 @@ class UserListViewModelTest {
                                 fullname = "Mr John Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/men/2.jpg",
                                 flag = "US",
-                                age = "27 ans",
+                                age = "27 y/o",
                             ),
                             UserState(
                                 uuid = "7745ef46-2c62-4e9e-b241-29400da064bc",
@@ -236,57 +153,97 @@ class UserListViewModelTest {
                                 fullname = "Mrs Jane Doe",
                                 pictureUrl = "https://randomuser.me/api/portraits/thumb/women/15.jpg",
                                 flag = "FR",
-                                age = "35 ans",
+                                age = "35 y/o",
                             ),
                         ),
                     )
                 }
+
+                eventFlow.test { expectNoEvents() }
             }
         }
 
     @Test
-    fun `process Load GIVEN repository returns empty list THEN emit state Loading and Content with empty list`() =
+    fun `process Load GIVEN processor process action and mutate THEN emit state with empty list`() =
         runTest {
-            with(viewModel(getUserListRepository = fakeGetUserListRepositoryReturnsEmptyList)) {
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Load)
+            with(viewModel(users = emptyList())) {
+                process(Action.Load)
 
                 viewStateFlow.test {
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true,
-                    )
-
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = false,
+                    awaitItem() shouldBe ViewState()
+                    awaitItem() shouldBe ViewState(isLoaderVisible = true)
+                    awaitItem() shouldBe ViewState(
+                        isLoaderVisible = false,
+                        isUserListVisible = true,
                         userStates = emptyList(),
                     )
                 }
+
+                eventFlow.test { expectNoEvents() }
             }
         }
 
     @Test
-    fun `process Load GIVEN repository throws exception THEN emit state Loading and Error`() =
+    fun `process Load GIVEN processor process action and mutate THEN emit state with error`() =
         runTest {
-            with(viewModel(getUserListRepository = fakeGetUserListRepositoryThrowsGetUserListException)) {
-                process(com.uteke.contactbook.features.userlist.presentation.UserListAction.Load)
+            with(viewModel(users = null)) {
+                process(Action.Load)
 
                 viewStateFlow.test {
-                    awaitItem() shouldBe UserListViewState.Content(
-                        isLoading = true,
+                    awaitItem() shouldBe ViewState()
+                    awaitItem() shouldBe ViewState(isLoaderVisible = true)
+                    awaitItem() shouldBe ViewState(
+                        isLoaderVisible = false,
+                        isUserListVisible = false,
+                        isErrorVisible = true,
+                        errorMessage = "generic error by error message"
                     )
+                }
 
-                    awaitItem() shouldBe UserListViewState.Error(
-                        message = "generic error",
-                    )
+                eventFlow.test { expectNoEvents() }
+            }
+        }
+
+    @Test
+    fun `process EmailClick GIVEN processor process action and mutate THEN emit OpenEmail`() =
+        runTest {
+            with(viewModel(users = null)) {
+                process(Action.EmailClick(uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437"))
+
+                viewStateFlow.test {
+                    awaitItem() shouldBe ViewState()
+                }
+
+                eventFlow.test {
+                    awaitItem() shouldBe Event.OpenEmail(email = "john.doe@example.com")
+                }
+            }
+        }
+
+    @Test
+    fun `process PhoneClick GIVEN processor process action and mutate THEN emit OpenPhone`() =
+        runTest {
+            with(viewModel(users = null)) {
+                process(Action.PhoneClick(uuid = "56989ef1-ee6a-4d6b-a20f-18b343213437"))
+
+                viewStateFlow.test {
+                    awaitItem() shouldBe ViewState()
+                }
+
+                eventFlow.test {
+                    awaitItem() shouldBe Event.OpenPhone(phone = "0123456789")
                 }
             }
         }
 
     private fun TestScope.viewModel(
-        getUserListRepository: GetUserListRepository,
+        users: List<UserDataModel>? = fakeUsers,
+        isConnectionLost: Boolean = false,
     ) = UserListViewModel(
-        getUserListRepository = getUserListRepository,
-        userListStateMapper = fakeUserListStateMapper,
-        dispatcherProvider = TestDispatcherProvider(scheduler = testScheduler),
-        connectivityMonitor = fakeConnectivityMonitor(),
+        reducers = listOf(fakeReducer),
+        actionProcessors = listOf(
+            fakeActionProcessor(isConnectionLost = isConnectionLost, users = users),
+        ),
+        dispatcherProvider = TestDispatcherProvider(testScheduler),
     )
 }

@@ -1,7 +1,6 @@
 package com.uteke.contactbook.features.userlist.data
 
 import com.uteke.contactbook.features.common.dispatcher.TestDispatcherProvider
-import com.uteke.contactbook.features.userlist.data.GetUserListRepositoryImpl
 import com.uteke.contactbook.features.userlist.data.model.GetUserListException
 import com.uteke.contactbook.features.userlist.data.model.PagedUserListDataModel
 import com.uteke.contactbook.features.userlist.data.model.UserDataModel

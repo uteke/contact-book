@@ -8,4 +8,7 @@ data class UserApiModel(
     val picture: PictureApiModel,
     val nationality: String,
     val location: LocationApiModel,
+    val email: String,
+    val phone: String,
+    val cell: String,
 )

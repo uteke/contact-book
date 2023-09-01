@@ -1,7 +1,7 @@
 package com.uteke.contactbook
 
 import android.app.Application
-import com.uteke.contactbook.features.common.dispatcher.commonModule
+import com.uteke.contactbook.features.common.commonModule
 import com.uteke.contactbook.features.userdetails.di.userDetailsModule
 import com.uteke.contactbook.features.userlist.di.userListModule
 import com.uteke.contactbook.network.retrofit.di.networkModule

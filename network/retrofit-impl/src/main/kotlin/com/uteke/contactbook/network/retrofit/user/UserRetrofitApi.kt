@@ -1,5 +1,6 @@
 package com.uteke.contactbook.network.retrofit.user
 
+import com.uteke.contactbook.network.retrofit.user.model.CoordinatesJsonModel
 import com.uteke.contactbook.network.retrofit.user.model.DateOfBirthJsonModel
 import com.uteke.contactbook.network.retrofit.user.model.GetUsersJsonModel
 import com.uteke.contactbook.network.retrofit.user.model.InfoJsonModel
@@ -10,6 +11,7 @@ import com.uteke.contactbook.network.retrofit.user.model.PictureJsonModel
 import com.uteke.contactbook.network.retrofit.user.model.StreetJsonModel
 import com.uteke.contactbook.network.user.UserApi
 import com.uteke.contactbook.network.retrofit.user.model.UserJsonModel
+import com.uteke.contactbook.network.user.model.CoordinatesApiModel
 import com.uteke.contactbook.network.user.model.DateOfBirthApiModel
 import com.uteke.contactbook.network.user.model.GetUsersApiModel
 import com.uteke.contactbook.network.user.model.InfoApiModel
@@ -53,6 +55,9 @@ class UserRetrofitApi(private val retrofit: Retrofit) : UserApi {
             login = login.toLoginApiModel(),
             nationality = nationality,
             location = location.toLocationApiModel(),
+            email = email,
+            cell = cell,
+            phone = phone,
         )
 
     private fun LoginJsonModel.toLoginApiModel() =
@@ -96,6 +101,13 @@ class UserRetrofitApi(private val retrofit: Retrofit) : UserApi {
             state = state,
             country = country,
             postcode = postcode,
+            coordinates = coordinates.toCoordinatesApiModel(),
+        )
+
+    private fun CoordinatesJsonModel.toCoordinatesApiModel() =
+        CoordinatesApiModel(
+            latitude = latitude,
+            longitude = longitude,
         )
 
     private fun StreetJsonModel.toStreetApiModel() =

@@ -8,6 +8,15 @@ data object UserListRouter {
     const val route = "users"
 
     @Composable
-    fun Screen(onItemClick: (String) -> Unit) =
-        UserListScreen(viewModel = koinViewModel(), onItemClick = onItemClick)
+    fun Screen(
+        onItemClick: (String) -> Unit,
+        onOpenEmail: (String) -> Unit,
+        onOpenPhone: (String) -> Unit,
+    ) =
+        UserListScreen(
+            viewModel = koinViewModel(),
+            onItemClick = onItemClick,
+            onOpenEmail = onOpenEmail,
+            onOpenPhone = onOpenPhone,
+        )
 }

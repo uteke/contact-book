@@ -3,23 +3,26 @@ package com.uteke.contactbook.features.userlist.presentation.view
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uteke.contactbook.features.common.view.ErrorView
 import com.uteke.contactbook.features.userlist.R
-import com.uteke.contactbook.features.userlist.presentation.UserListViewState
-import com.uteke.contactbook.features.userlist.presentation.UserState
 
 @Composable
 internal fun UserListContent(
     modifier: Modifier = Modifier,
-    viewState: UserListViewState,
+    viewState: ViewState,
     onItemClick: (String) -> Unit,
+    onEmailClick: (String) -> Unit,
+    onPhoneClick: (String) -> Unit,
     onLoadNext: () -> Unit,
     onReload: () -> Unit,
 ) {
@@ -27,25 +30,33 @@ internal fun UserListContent(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        when (viewState) {
-            is UserListViewState.Error ->
-                ErrorView(
-                    message = viewState.message,
-                    buttonText =  stringResource(id = R.string.userlist_action_reload),
-                    onReload = onReload,
-                )
-            is UserListViewState.Content ->
-                UserListView(
-                    modifier = Modifier.fillMaxSize(),
-                    userStates = viewState.userStates,
-                    isLoading = viewState.isLoading,
-                    onItemClick = onItemClick,
-                    onLoadNext = onLoadNext,
-                )
+        if (viewState.isErrorVisible) {
+            ErrorView(
+                message = viewState.errorMessage,
+                buttonText = stringResource(id = R.string.userlist_action_reload),
+                onReload = onReload,
+            )
+        }
+
+        if (viewState.isUserListVisible) {
+            UserListView(
+                modifier = Modifier.fillMaxSize(),
+                userStates = viewState.userStates,
+                onItemClick = onItemClick,
+                onEmailClick = onEmailClick,
+                onPhoneClick = onPhoneClick,
+                onLoadNext = onLoadNext,
+            )
+        }
+
+        if (viewState.isLoaderVisible) {
+            CircularProgressIndicator(
+                color = Color.Black,
+            )
         }
     }
 
-    if (viewState.isConnectionLost) {
+    if (viewState.isConnectivityVisible) {
         BannerView(
             modifier = Modifier.padding(
                 start = 8.dp,
@@ -63,9 +74,11 @@ private fun UserListContentPreview() =
     MaterialTheme {
         UserListContent(
             modifier = Modifier.fillMaxSize(),
-            viewState = UserListViewState.Content(
-                isConnectionLost = true,
-                isLoading = true,
+            viewState = ViewState(
+                isConnectivityVisible = true,
+                isLoaderVisible = true,
+                isErrorVisible = true,
+                isUserListVisible = true,
                 userStates = listOf(
                     UserState(
                         uuid = "uuid1",
@@ -86,8 +99,9 @@ private fun UserListContentPreview() =
                 ),
             ),
             onItemClick = {},
+            onEmailClick = {},
+            onPhoneClick = {},
             onLoadNext = {},
-            onReload = {},
-        )
+        ) {}
     }
 

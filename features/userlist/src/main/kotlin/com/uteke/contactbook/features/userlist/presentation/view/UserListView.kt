@@ -7,24 +7,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.uteke.contactbook.features.userlist.presentation.UserState
 
 @Composable
 internal fun UserListView(
     modifier: Modifier = Modifier,
     userStates: List<UserState>,
-    isLoading: Boolean,
     onItemClick: (String) -> Unit,
+    onEmailClick: (String) -> Unit,
+    onPhoneClick: (String) -> Unit,
     onLoadNext: () -> Unit,
 ) {
     val lazyColumnListState = rememberLazyListState()
@@ -57,14 +55,10 @@ internal fun UserListView(
                 modifier = Modifier.wrapContentHeight(),
                 state = userState,
                 onClick = onItemClick,
+                onEmailClick = onEmailClick,
+                onPhoneClick = onPhoneClick,
             )
         }
-    }
-
-    if (isLoading) {
-        CircularProgressIndicator(
-            color = Color.Black,
-        )
     }
 }
 
@@ -78,7 +72,6 @@ private fun UserListViewPreview() =
     MaterialTheme {
         UserListView(
             modifier = Modifier,
-            isLoading = true,
             userStates = listOf(
                 UserState(
                     uuid = "uuid1",
@@ -98,6 +91,8 @@ private fun UserListViewPreview() =
                 ),
             ),
             onItemClick = {},
+            onEmailClick = {},
+            onPhoneClick = {},
             onLoadNext = {},
         )
     }

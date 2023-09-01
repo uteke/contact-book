@@ -28,4 +28,9 @@ message UserProto {
   string state = 16;
   string country = 17;
   string postcode = 18;
+  double latitude = 19;
+  double longitude = 20;
+  string email = 21;
+  string phone = 22;
+  string cell = 23;
 }

@@ -15,10 +15,10 @@ class GetUserListRepositoryImpl(
     private val userStore: UserStore,
     private val dispatcher: DispatcherProvider,
 ) : GetUserListRepository {
-    override suspend fun invoke(page: Int, limit: Int): PagedUserListDataModel =
-        withContext(dispatcher.io) {
+    override suspend fun invoke(page: Int, limit: Int): PagedUserListDataModel
+        {
             fetchAndSave(page = page, limit = limit)
-            retrieve(page = page, limit = limit)
+            return retrieve(page = page, limit = limit)
         }
 
     private suspend fun fetchAndSave(page: Int, limit: Int) =
@@ -95,5 +95,10 @@ class GetUserListRepositoryImpl(
             state = location.state,
             country = location.country,
             postcode = location.postcode,
+            latitude = location.coordinates.latitude.toDouble(),
+            longitude = location.coordinates.longitude.toDouble(),
+            email = email,
+            phone = phone,
+            cell = cell,
         )
 }

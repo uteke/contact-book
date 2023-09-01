@@ -6,4 +6,5 @@ data class LocationApiModel(
     val state: String,
     val country: String,
     val postcode: String,
+    val coordinates: CoordinatesApiModel,
 )

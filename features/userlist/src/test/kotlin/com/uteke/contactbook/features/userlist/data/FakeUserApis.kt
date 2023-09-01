@@ -3,6 +3,7 @@ package com.uteke.contactbook.features.userlist.data
 import com.uteke.contactbook.network.user.model.NameApiModel
 import com.uteke.contactbook.network.user.model.PictureApiModel
 import com.uteke.contactbook.network.user.UserApi
+import com.uteke.contactbook.network.user.model.CoordinatesApiModel
 import com.uteke.contactbook.network.user.model.DateOfBirthApiModel
 import com.uteke.contactbook.network.user.model.GetUsersApiModel
 import com.uteke.contactbook.network.user.model.InfoApiModel
@@ -46,7 +47,14 @@ internal val fakeUserApiReturnsSuccessOfListOfUser = object : UserApi {
                             state =  "Australian Capital Territory",
                             country = "Australia",
                             postcode = "3018",
+                            coordinates = CoordinatesApiModel(
+                                latitude= "60.1379",
+                                longitude = "99.1676",
+                            )
                         ),
+                        email = "john.doe@example.com",
+                        phone = "(301)-454-7664",
+                        cell = "(501)-170-7313",
                     ),
                     UserApiModel(
                         gender = "female",
@@ -78,7 +86,14 @@ internal val fakeUserApiReturnsSuccessOfListOfUser = object : UserApi {
                             state =  "Acre",
                             country = "Brazil",
                             postcode = "48678",
+                            coordinates = CoordinatesApiModel(
+                                latitude = "24.0088",
+                                longitude = "62.3180",
+                            )
                         ),
+                        email = "jane.doe@example.com",
+                        phone = "075 053 34 14",
+                        cell = "075 416 94 59",
                     ),
                 ),
                 info = InfoApiModel(

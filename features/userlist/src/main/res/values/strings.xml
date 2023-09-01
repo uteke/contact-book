@@ -2,7 +2,7 @@
 <resources>
     <string name="userlist_screen_title">Users</string>
     <string name="userlist_action_reload">Reload</string>
-    <string name="userlist_text_generic_error">An error occurred on loading the users</string>
+    <string name="userlist_text_generic_error">An error occurred on loading the users caused by %s</string>
     <string name="userlist_text_fullname_format">%1$s %2$s %3$s</string>
     <string name="userlist_text_age_format">%d y/o</string>
     <string name="userlist_message_connection_unavailable">Offline</string>

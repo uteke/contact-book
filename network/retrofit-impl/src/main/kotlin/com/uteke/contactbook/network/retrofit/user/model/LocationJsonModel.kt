@@ -9,4 +9,5 @@ data class LocationJsonModel(
     val state: String,
     val country: String,
     val postcode: String,
+    val coordinates: CoordinatesJsonModel,
 )

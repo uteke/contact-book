@@ -14,4 +14,7 @@ data class UserJsonModel(
     @Json(name = "nat")
     val nationality: String,
     val location: LocationJsonModel,
+    val email: String,
+    val phone: String,
+    val cell: String,
 )

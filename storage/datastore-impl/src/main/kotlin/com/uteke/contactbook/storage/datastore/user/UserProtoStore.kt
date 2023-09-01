@@ -61,6 +61,11 @@ class UserProtoStore(
             state = this@newBuilder.state
             country = this@newBuilder.country
             postcode = this@newBuilder.postcode
+            latitude = this@newBuilder.latitude
+            longitude = this@newBuilder.longitude
+            email = this@newBuilder.email
+            cell = this@newBuilder.cell
+            phone = this@newBuilder.phone
         }
 
     private fun UserProto.toUserLocalModel() =
@@ -83,5 +88,10 @@ class UserProtoStore(
             state = state,
             country = country,
             postcode = postcode,
+            latitude = latitude,
+            longitude = longitude,
+            email = email,
+            phone = phone,
+            cell = cell,
         )
 }

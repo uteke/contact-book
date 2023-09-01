@@ -1,7 +1,9 @@
 package com.uteke.contactbook
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -35,7 +37,9 @@ class MainActivity : ComponentActivity() {
                 UserListRouter.Screen(
                     onItemClick = { id ->
                         navHostController.navigate(UserDetailsRouter.route(id))
-                    }
+                    },
+                    onOpenEmail = { email -> openEmail(email) },
+                    onOpenPhone = { phone -> openPhone(phone) }
                 )
             }
             composable(
@@ -58,4 +62,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun openEmail(to: String) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            intent.setType("message/rfc822")
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
+        }
+        startActivity(Intent.createChooser(intent,"Choose an email app"))
+    }
+
+    private fun openPhone(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+        startActivity(Intent.createChooser(intent,"Choose an phone app"))
+    }
 }

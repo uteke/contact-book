@@ -19,4 +19,9 @@ data class UserLocalModel(
     val state: String,
     val country: String,
     val postcode: String,
+    val latitude: Double,
+    val longitude: Double,
+    val email: String,
+    val phone: String,
+    val cell: String,
 )

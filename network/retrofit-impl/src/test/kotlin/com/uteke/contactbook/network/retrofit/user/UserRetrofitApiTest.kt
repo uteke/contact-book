@@ -1,6 +1,7 @@
 package com.uteke.contactbook.network.retrofit.user
 
 import com.squareup.moshi.Moshi
+import com.uteke.contactbook.network.user.model.CoordinatesApiModel
 import com.uteke.contactbook.network.user.model.DateOfBirthApiModel
 import com.uteke.contactbook.network.user.model.GetUsersApiModel
 import com.uteke.contactbook.network.user.model.InfoApiModel
@@ -216,7 +217,14 @@ class UserRetrofitApiTest {
                                 state =  "Australian Capital Territory",
                                 country = "Australia",
                                 postcode = "3018",
+                                coordinates = CoordinatesApiModel(
+                                    latitude = "-83.6031",
+                                    longitude = "18.6994",
+                                )
                             ),
+                            email = "frances.herrera@example.com",
+                            phone = "02-1122-1470",
+                            cell = "0444-339-924",
                         ),
                         UserApiModel(
                             gender = "male",
@@ -248,7 +256,14 @@ class UserRetrofitApiTest {
                                 state =  "Acre",
                                 country = "Brazil",
                                 postcode = "48678",
+                                coordinates = CoordinatesApiModel(
+                                    latitude = "43.6207",
+                                    longitude = "-159.4352",
+                                )
                             ),
+                            email = "juliano.damota@example.com",
+                            phone = "(63) 5577-5851",
+                            cell = "(71) 1434-8746",
                         ),
                     ),
                     info = InfoApiModel(
