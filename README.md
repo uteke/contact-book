@@ -4,7 +4,7 @@
 - Gradle 8.2
 - Java 17
 - Kotlin 1.9
-- Compose compiler 1.5.1
+- Compose compiler 1.5.2
 
 ## App structure
     | app
@@ -22,7 +22,7 @@
         | user-api : user api to get users from local storage
 
 ## Libraries
-- Compose UI & navigation with MVI pattern
+- Compose UI & navigation with an extended MVI pattern
 - DI with Koin
 - Networking with Retrofit & OkHttp
 - Json converter with Moshi
