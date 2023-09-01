@@ -11,10 +11,19 @@ data object UserDetailsRouter {
     fun route(id: String) = "users/$id"
 
     @Composable
-    fun Screen(id: String, onBack: () -> Unit) =
+    fun Screen(
+        id: String,
+        goBack: () -> Unit,
+        openEmail: (String) -> Unit,
+        openPhone: (String) -> Unit,
+        openLocation: (Double, Double) -> Unit,
+    ) =
         UserDetailsScreen(
             viewModel = koinViewModel(),
             id = id,
-            onBack = onBack,
+            onBack = goBack,
+            onEmailClick = openEmail,
+            onPhoneClick = openPhone,
+            onLocationClick = openLocation,
         )
 }

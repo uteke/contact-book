@@ -28,6 +28,11 @@ internal val fakeUserStoreReturnsUser = object : UserStore {
             state =  "Australian Capital Territory",
             country = "Australia",
             postcode = "3018",
+            latitude = -69.8246,
+            longitude = 134.8719,
+            email = "frances.herrera@example.com",
+            cell = "(489) 330-2385",
+            phone = "(272) 790-0888",
         )
 }
 

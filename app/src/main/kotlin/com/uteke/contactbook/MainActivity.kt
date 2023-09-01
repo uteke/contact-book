@@ -38,8 +38,8 @@ class MainActivity : ComponentActivity() {
                     onItemClick = { id ->
                         navHostController.navigate(UserDetailsRouter.route(id))
                     },
-                    onOpenEmail = { email -> openEmail(email) },
-                    onOpenPhone = { phone -> openPhone(phone) }
+                    openEmail = { email -> openEmail(email) },
+                    openPhone = { phone -> openPhone(phone) }
                 )
             }
             composable(
@@ -56,22 +56,30 @@ class MainActivity : ComponentActivity() {
             ) { backStackEntry ->
                 UserDetailsRouter.Screen(
                     id = backStackEntry.arguments?.getString(UserDetailsRouter.param) ?: "",
-                    onBack = { navHostController.popBackStack() }
+                    goBack = { navHostController.popBackStack() },
+                    openEmail = { email -> openEmail(email) },
+                    openPhone = { phone -> openPhone(phone) },
+                    openLocation = { latitude, longitude -> openLocation(latitude, longitude) }
                 )
             }
         }
     }
 
-    private fun openEmail(to: String) {
+    private fun openEmail(email: String) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             intent.setType("message/rfc822")
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
         }
         startActivity(Intent.createChooser(intent,"Choose an email app"))
     }
 
     private fun openPhone(phone: String) {
         val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+        startActivity(Intent.createChooser(intent,"Choose an phone app"))
+    }
+
+    private fun openLocation(latitude: Double, longitude: Double) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=$latitude,$longitude"))
         startActivity(Intent.createChooser(intent,"Choose an phone app"))
     }
 }

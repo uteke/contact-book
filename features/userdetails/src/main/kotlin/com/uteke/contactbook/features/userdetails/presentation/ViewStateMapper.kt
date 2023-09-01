@@ -4,23 +4,24 @@ import android.content.res.Resources
 import com.uteke.contactbook.features.userdetails.R
 import com.uteke.contactbook.features.userdetails.data.model.NoUserForIdException
 import com.uteke.contactbook.features.userdetails.data.model.UserDataModel
+import com.uteke.contactbook.features.userdetails.presentation.view.ViewState
 import java.lang.Exception
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-interface UserDetailsStateMapper {
-    fun map(user: UserDataModel): UserDetailsViewState.Content
-    fun map(exception: Exception): UserDetailsViewState.Error
+interface ViewStateMapper {
+    fun map(user: UserDataModel): ViewState.Content
+    fun map(exception: Exception): ViewState.Error
 }
 
-class UserDetailsStateMapperImpl(
+class ViewStateMapperImpl(
     private val resources: Resources,
     private val locale: Locale,
-) : UserDetailsStateMapper {
+) : ViewStateMapper {
 
-    override fun map(user: UserDataModel): UserDetailsViewState.Content =
+    override fun map(user: UserDataModel): ViewState.Content =
         with(user) {
-            UserDetailsViewState.Content(
+            ViewState.Content(
                 gender = user.gender,
                 nationality = Locale("", user.nationality).getDisplayCountry(locale),
                 username = user.username,
@@ -41,8 +42,8 @@ class UserDetailsStateMapperImpl(
             )
         }
 
-    override fun map(exception: Exception): UserDetailsViewState.Error =
-        UserDetailsViewState.Error(
+    override fun map(exception: Exception): ViewState.Error =
+        ViewState.Error(
             message = if (exception is NoUserForIdException) {
                 resources.getString(R.string.userdetails_text_no_user_error)
                     .format(exception.id)

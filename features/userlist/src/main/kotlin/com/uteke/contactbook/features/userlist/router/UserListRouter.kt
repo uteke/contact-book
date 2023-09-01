@@ -10,13 +10,13 @@ data object UserListRouter {
     @Composable
     fun Screen(
         onItemClick: (String) -> Unit,
-        onOpenEmail: (String) -> Unit,
-        onOpenPhone: (String) -> Unit,
+        openEmail: (String) -> Unit,
+        openPhone: (String) -> Unit,
     ) =
         UserListScreen(
             viewModel = koinViewModel(),
             onItemClick = onItemClick,
-            onOpenEmail = onOpenEmail,
-            onOpenPhone = onOpenPhone,
+            onOpenEmail = openEmail,
+            onOpenPhone = openPhone,
         )
 }

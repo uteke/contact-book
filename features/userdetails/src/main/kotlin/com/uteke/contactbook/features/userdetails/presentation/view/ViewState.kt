@@ -1,13 +1,13 @@
-package com.uteke.contactbook.features.userdetails.presentation
+package com.uteke.contactbook.features.userdetails.presentation.view
 
 import androidx.compose.runtime.Immutable
 
-sealed interface UserDetailsViewState {
-    data object Loading : UserDetailsViewState
+sealed interface ViewState {
+    data object Loading : ViewState
 
     data class Error(
         val message: String,
-    ) : UserDetailsViewState
+    ) : ViewState
 
     @Immutable
     data class Content(
@@ -23,5 +23,5 @@ sealed interface UserDetailsViewState {
         val state: String,
         val country: String,
         val postcode: String,
-    ) : UserDetailsViewState
+    ) : ViewState
 }

@@ -1,15 +1,15 @@
 package com.uteke.contactbook.features.userdetails.data
 
 import com.uteke.contactbook.features.userdetails.data.model.UserDataModel
-import com.uteke.contactbook.features.userdetails.presentation.UserDetailsStateMapper
-import com.uteke.contactbook.features.userdetails.presentation.UserDetailsViewState
+import com.uteke.contactbook.features.userdetails.presentation.ViewStateMapper
+import com.uteke.contactbook.features.userdetails.presentation.view.ViewState
 import java.lang.Exception
 import java.time.format.DateTimeFormatter
 
-internal val fakeMapper = object : UserDetailsStateMapper {
-    override fun map(user: UserDataModel): UserDetailsViewState.Content =
+internal val fakeMapper = object : ViewStateMapper {
+    override fun map(user: UserDataModel): ViewState.Content =
         with(user) {
-            UserDetailsViewState.Content(
+            ViewState.Content(
                 gender = user.gender,
                 username = user.username,
                 fullname = "$title $firstname $lastname",
@@ -27,8 +27,8 @@ internal val fakeMapper = object : UserDetailsStateMapper {
             )
         }
 
-    override fun map(exception: Exception): UserDetailsViewState.Error =
-        UserDetailsViewState.Error(
+    override fun map(exception: Exception): ViewState.Error =
+        ViewState.Error(
             message = "error message"
         )
 }

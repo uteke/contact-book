@@ -4,8 +4,7 @@ import android.content.res.Resources
 import com.uteke.contactbook.features.userdetails.R
 import com.uteke.contactbook.features.userdetails.data.model.NoUserForIdException
 import com.uteke.contactbook.features.userdetails.data.model.UserDataModel
-import com.uteke.contactbook.features.userdetails.presentation.UserDetailsStateMapperImpl
-import com.uteke.contactbook.features.userdetails.presentation.UserDetailsViewState
+import com.uteke.contactbook.features.userdetails.presentation.view.ViewState
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
@@ -15,9 +14,9 @@ import java.time.LocalDate
 import java.time.Month
 import java.util.Locale
 
-class UserDetailsStateMapperImplTest {
+class ViewStateMapperImplTest {
     private val resources = mockk<Resources>()
-    private val mapper = UserDetailsStateMapperImpl(resources = resources, locale = Locale.ENGLISH)
+    private val mapper = ViewStateMapperImpl(resources = resources, locale = Locale.ENGLISH)
 
     @Test
     fun `map empty list with data list model to Content`() {
@@ -46,7 +45,7 @@ class UserDetailsStateMapperImplTest {
                 postcode = "3018",
             ),
         ) shouldBe
-                UserDetailsViewState.Content(
+                ViewState.Content(
                     pictureUrl = "https://randomuser.me/api/portraits/large/women/15.jpg",
                     username = "yellowbutterfly577",
                     gender = "female",
@@ -67,7 +66,7 @@ class UserDetailsStateMapperImplTest {
         every { resources.getString(R.string.userdetails_text_generic_error) } returns "generic error"
 
         mapper.map(exception = Exception()) shouldBe
-                UserDetailsViewState.Error(message = "generic error")
+                ViewState.Error(message = "generic error")
     }
 
     @Test
@@ -75,6 +74,6 @@ class UserDetailsStateMapperImplTest {
         every { resources.getString(R.string.userdetails_text_no_user_error) } returns "no user %s"
 
         mapper.map(exception = NoUserForIdException(id = "56989ef1-ee6a")) shouldBe
-                UserDetailsViewState.Error(message = "no user 56989ef1-ee6a")
+                ViewState.Error(message = "no user 56989ef1-ee6a")
     }
 }

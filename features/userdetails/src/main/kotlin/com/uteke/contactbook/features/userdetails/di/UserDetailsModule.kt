@@ -1,7 +1,9 @@
 package com.uteke.contactbook.features.userdetails.di
 
 import com.uteke.contactbook.features.userdetails.data.GetUserByIdRepositoryImpl
-import com.uteke.contactbook.features.userdetails.presentation.UserDetailsStateMapperImpl
+import com.uteke.contactbook.features.userdetails.data.GetUserContactRepositoryImpl
+import com.uteke.contactbook.features.userdetails.data.GetUserLocationRepositoryImpl
+import com.uteke.contactbook.features.userdetails.presentation.ViewStateMapperImpl
 import com.uteke.contactbook.features.userdetails.presentation.UserDetailsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,7 +16,13 @@ val userDetailsModule = module {
             getUserByIdRepository = GetUserByIdRepositoryImpl(
                 userStore = get(),
             ),
-            userDetailsStateMapper = UserDetailsStateMapperImpl(
+            getUserContactRepository = GetUserContactRepositoryImpl(
+                userStore = get(),
+            ),
+            getUserLocationRepository = GetUserLocationRepositoryImpl(
+                userStore = get(),
+            ),
+            viewStateMapper = ViewStateMapperImpl(
                 resources = androidContext().resources,
                 locale = Locale.getDefault(),
             ),
